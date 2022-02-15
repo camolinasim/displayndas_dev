@@ -1,0 +1,72 @@
+
+/* Modified these for banner/footer */
+html {
+    height: 100%;
+    margin:0;
+  }
+  
+  body {
+    height: 100%;
+    margin:0;
+    background-color: #FFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #00275B
+  }
+  
+  .ContentMain {
+    min-height:100%;
+      margin-left:auto;
+      margin-right:auto;
+      margin-top:5px;
+      padding-top:5px;
+    width:842px;
+  
+  }
+  
+  .ContentMid {
+      padding:10px;
+    padding-bottom:-40px;
+  }
+  
+  .footer {
+      height: 40px;
+      margin-top:-40px;
+      background: #ff8d4f;
+          color: #00275B;
+  
+  }
+  /* REMOVED TABLE CSS FROM SEARCH FILTER, NOT NEEDED FOR EDIT PAGE  */
+  
+  a:link {
+      color: #245285;
+      font-weight: bold;
+      text-decoration: none;
+  }
+  a:visited {
+      color: #245285;
+      font-weight: bold;
+      text-decoration: none;
+  }
+  a:hover {
+      color: #cc3300;
+      font-weight: bold;
+      text-decoration: underline;
+  }
+  
+  .alert {
+      color:#C00;
+      font-size:12px;
+      font-weight:bold
+  }
+  .small {
+      font-size:10px;
+      font-weight:normal
+  }
+  
+  .req {
+      color:#C00;
+      font-size:12px;
+      font-weight:bold;
+  }
+  
