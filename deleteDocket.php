@@ -17,9 +17,9 @@ if (($_SESSION['user']==null) && ($_SERVER['HTTP_HOST'] != 'localhost'))
 // {
 //   exit();
 // }
-$File = "ORSPSRVAPP02/webroot2/NDAs_dev/".($_GET["file"]);
+  $File = "ORSPSRVAPP02/webroot2/NDAs_dev/".($_GET["Docket"]);
 
-//echo(__FILE__.":".__LINE__.' $File = '.$File.'<br>' );
+  //echo(__FILE__.":".__LINE__.' $File = '.$File.'<br>' );
 
 if (!is_file($File))
 {
@@ -29,7 +29,7 @@ if (!is_file($File))
     echo "Unable to connect to the MSSQL server";
     exit(0);
   }
-  $q = "DELETE FROM [displayndas_dev].[dbo].[ndafiles] WHERE Filename='".rawurldecode($_GET["file"])."'";
+  $q = "DELETE FROM [displayndas_dev].[dbo].[ndas] WHERE Docket='".rawurldecode($_GET["Docket"])."'";
   $result2 = $mssqldb_conn->query($q);
   if (!$result2)
   {
@@ -38,7 +38,7 @@ if (!is_file($File))
     print_r($mssqldb_conn->errorInfo());
     die();
   }
-  echo "Docket '"."NDAs_dev/".rawurldecode($_GET["file"])."' has been deleted.";
+  echo "Docket '"."NDAs_dev/".rawurldecode($_GET["Docket"])."' has been deleted.";
   exit();
 }
 if (is_file($File) && unlink($File)) {
