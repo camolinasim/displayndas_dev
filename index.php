@@ -65,7 +65,7 @@ if ($row2['NumberOfFiles'] != $NumberOfFiles)
 {
  $d = dir("\\\ORSPSRVAPP02\\webroot2\\NDAs_dev");
 
- // Delete all the records in table ndafiles..
+ // Delete all the records in table ndafiles...
 
  $q = "DELETE FROM [displayndas_dev].[dbo].[ndafiles];";
  $result = $mssqldb_conn->query($q);
@@ -493,7 +493,7 @@ if (!$mssqlresults)
                      // {
                      echo '<td>';
                        //echo <form action="DeleteFile.php" method="POST"  <input type="submit" value="Delete Docket!"></form>;
-                       echo '<form action="DeleteDocket.php?Docket=', $row['Docket'], '" method="post"> <input type="submit" value="Delete Docket!">';
+                       echo '<form action="deleteDocket.php?Docket=', rawurlencode($row['Docket']), '" method="post"> <input type="submit" value="Delete Docket!">';
                        //echo '<button class="btn btn-danger" value="DeleteFile.php?file=', $row['Docket'], '"> Delete Docket</button>';
 
                        echo '&nbsp;&nbsp;<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadDoc" value="https://orspweb2.utep.edu/displayndas_dev/UploadDocument.php?docket=' . $row['Docket'] . '">Upload File</button>
