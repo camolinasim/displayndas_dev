@@ -65,7 +65,7 @@ if ($row2['NumberOfFiles'] != $NumberOfFiles)
 {
  $d = dir("\\\ORSPSRVAPP02\\webroot2\\NDAs_dev");
 
- // Delete all the records in table ndafiles..
+ // Delete all the records in table ndafiles...
 
  $q = "DELETE FROM [displayndas_dev].[dbo].[ndafiles];";
  $result = $mssqldb_conn->query($q);
