@@ -1,4 +1,29 @@
 <?php
+
+function deleteDirectory($dir) {
+    if (!file_exists($dir)) {
+        return true;
+    }
+
+    if (!is_dir($dir)) {
+        return unlink($dir);
+    }
+
+    foreach (scandir($dir) as $item) {
+        if ($item == '.' || $item == '..') {
+            continue;
+        }
+
+        if (!deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+            return false;
+        }
+
+    }
+
+    return rmdir($dir);
+}
+
+
 print_r($_GET);
 $redirect=  'Location: reportexample.php' ;
 session_start();
@@ -38,7 +63,12 @@ if (!is_file($File))
     print_r($mssqldb_conn->errorInfo());
     die();
   }
+  //delete folder
+  $target_dir  = "\\\ORSPSRVAPP02\\webroot2\\NDAs_dev\\".$_GET['Docket'].'\\';
+  deleteDirectory($target_dir);
   echo "Docket '"."NDAs_dev/".rawurldecode($_GET["Docket"])."' has been deleted.";
+  header("Location: https://orspweb2.utep.edu/displayndas_dev/index.php");
+
   exit();
 }
 if (is_file($File) && unlink($File)) {
