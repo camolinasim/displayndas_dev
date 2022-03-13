@@ -9,6 +9,7 @@ $console = implode(',', $console);
 echo "<script>console.log('Console: " . $console . "' );</script>";
 }
 
+
 //delete
 
 require_once("./conf/conf_db_mssql_ndas.php");
@@ -156,7 +157,9 @@ if (!$mssqlresults)
  <link href="https://cloud.typography.com/6793094/7122152/css/fonts.css" rel="stylesheet" type="text/css" />
 
  <!-- JS -->
- <script src="assets/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+ <!-- <script src="assets/js/jquery-2.1.1.min.js" type="text/javascript"></script> -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
  <script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
 
  <?php include_once("assets/regions/navbar.php"); ?>
@@ -202,6 +205,8 @@ if (!$mssqlresults)
 
    });
  </script>
+
+
 
 
  <!-- styles for css -->
@@ -428,6 +433,14 @@ if (!$mssqlresults)
                <th scope="col">Options</th>
              </tr>
            </tfoot>
+           <!-- come back here -->
+           <script type="text/javascript">
+              $(document).ready(function(){
+                $("#pretty-upload").click(function(){
+                  alert("You clicked me!");
+                });
+              });
+           </script>
 
            <?php
              if (!isset($_GET["docket"])) {
@@ -450,7 +463,7 @@ if (!$mssqlresults)
              $mssqlresults = $mssqldb_conn->query($q);
 
              while ($row = $mssqlresults->fetch(PDO::FETCH_ASSOC)) {
-               println($row);
+               //println($row);
 
                echo '
                  <tr>
@@ -459,35 +472,16 @@ if (!$mssqlresults)
                    <td>' . $row['Expiration Date'] . '</td>
                    <td>';
 
-                     $q = "SELECT Filename FROM [displayndas_dev].[dbo].[ndafiles] WHERE Filename LIKE '%" . $row['Docket'] . "%'";
-                     $result2 = $extra_conn->query($q);
-                     if (!$result2) {
-                       echo "<br> query = $q<br><br>";
-                       echo (__FILE__ . ":" . __LINE__ . ' Error: ');
-                       print_r($extra_conn->errorInfo());
-                       die();
-                     }
                      $row2 = $result2->fetch(PDO::FETCH_ASSOC);
                      //prints most filenames in the NDA's column
                      $files = scandir("\\inetpub\\webroot2\\NDAs_dev\\".$row['Docket']); //get directory contents
-
+                     println($files);
                      for ($i=2; $i < count($files); $i++) { //start at 2 to skip dir name and parent name
-                       echo '<a href="https://orspweb2.utep.edu/NDAs_dev/', $row['Docket'].'/'.$files[$i], '" target="_blank">', htmlentities($files[$i]), '<br />', '</a>';
-                       echo '<form action="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '", method="POST"> <input type="submit" value="Delete!"></form>';
+                       echo '<a href="https://orspweb2.utep.edu/NDAs_dev/', $row['Docket'].'/'.$files[$i], '" target="_blank">', htmlentities($files[$i]), '<br />', '</a>'; //prints file on the table & makes it clickable
+                       echo '<form action="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '", method="POST"> <input type="submit" value="Delete!"></form>'; //adds delete button for the file
                      }
-                     // echo '<a href="https://orspweb2.utep.edu/NDAs_dev/', $row2['Filename'], '" target="_blank">', htmlentities($row2['Filename']), '</a>';echo '<a href="https://orspweb2.utep.edu/NDAs_dev/', $row2['Filename'], '" target="_blank">', htmlentities($row2['Filename']), '</a>';
-
-                     // if (($row2['Filename']))
-                     // {
-                     //   // $to_delete = rawurlencode($row2['Filename']);                    //file=NDAs_dev/
-                     //   // $_POST['Filename'] = $to_delete;
-                     //   echo '<form action="DeleteFile.php?file=', rawurlencode($row2['Filename']), '", method="POST"> <input type="submit" value="Delete!"></form>';
-                     //
-                     //   //'&nbsp;&nbsp;&nbsp;<button class="btn btn-warning" value="DeleteFile.php?fileName=', rawurlencode($row2['Filename']), '">Delete1 File </button>';
-                     // }
                      while ($row2 = $result2->fetch(PDO::FETCH_ASSOC))
                      {
-                       //$entry2 = str_replace('#','%23',$entry2);
                        echo '<br><br> <a href="https://orspweb2.utep.edu/NDAs_dev/', $row2['Filename'],'" target="_blank">',htmlentities($row2['Filename']),'</a>';
 
                        // if ($scdocs_admins_access)
@@ -500,11 +494,14 @@ if (!$mssqlresults)
                      // {
                      echo '<td>';
                        //echo <form action="DeleteFile.php" method="POST"  <input type="submit" value="Delete Docket!"></form>;
+
                        echo '<form action="deleteDocket.php?Docket=', rawurlencode($row['Docket']), '" method="post"> <input type="submit" value="Delete Docket!"> </form>';
                        //echo '<button class="btn btn-danger" value="DeleteFile.php?file=', $row['Docket'], '"> Delete Docket</button>';
                        echo '<form action="UploadDocument.php?docket='. rawurlencode($row['Docket']), '" method="post"> <input type="submit" value="upload file2!"> </form>';
 
-                       echo '&nbsp;&nbsp;<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadDoc" value="https://orspweb2.utep.edu/displayndas_dev/UploadDocument.php?docket=' . $row['Docket'] . '">Upload File</button>
+                       // echo '&nbsp;&nbsp;<button class="btn btn-primary" id="pretty-upload" type="button" data-toggle="modal" data-target="#uploadDoc" value="https://orspweb2.utep.edu/displayndas_dev/UploadDocument.php?docket=' . $row['Docket'] . '">Upload File</button>
+                       echo '&nbsp;&nbsp;<button class="btn btn-primary" id="pretty-upload" type="button" data-toggle="modal">Upload File</button>
+
                      </td>'; ?>
 
                        <!-- The Upload New Docket Modal -->
