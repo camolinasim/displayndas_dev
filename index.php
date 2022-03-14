@@ -33,7 +33,7 @@ if ( isset($_SESSION[$userAuthenticationID_key]) && isset($_SESSION[$userAuthent
 }
 
 // ----------
-println($_FILES);
+//println($_FILES);
 $mssqldb_conn = new PDO($PDO_ndas);
 $extra_conn = new PDO($PDO_ndas);
 
@@ -157,8 +157,9 @@ if (!$mssqlresults)
  <link href="https://cloud.typography.com/6793094/7122152/css/fonts.css" rel="stylesheet" type="text/css" />
 
  <!-- JS -->
- <!-- <script src="assets/js/jquery-2.1.1.min.js" type="text/javascript"></script> -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="assets/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+
+ <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
  <script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
 
@@ -338,6 +339,14 @@ if (!$mssqlresults)
    .modal-backdrop {
      z-index: -1;
    }
+
+   .flex-parent {
+     display: flex;
+   }
+
+   .jc-center {
+     justify-content: center;
+   }
  </style>
 
 </head>
@@ -434,13 +443,22 @@ if (!$mssqlresults)
              </tr>
            </tfoot>
            <!-- come back here -->
-           <script type="text/javascript">
+           <!-- <script type="text/javascript">
               $(document).ready(function(){
-                $("#pretty-upload").click(function(){
+                $('#pretty-upload').click(function(){
                   alert("You clicked me!");
+                  var clickBtnValue = $(this).val();
+                  var ajaxurl = 'ajax.php',
+                  data =  {'action': clickBtnValue};
+                  $.post(ajaxurl, data, function (response) {
+                      // Response div goes here.
+                      alert("action performed successfully");
+                  });
                 });
               });
-           </script>
+           </script> -->
+
+
 
            <?php
              if (!isset($_GET["docket"])) {
@@ -475,10 +493,10 @@ if (!$mssqlresults)
                      $row2 = $result2->fetch(PDO::FETCH_ASSOC);
                      //prints most filenames in the NDA's column
                      $files = scandir("\\inetpub\\webroot2\\NDAs_dev\\".$row['Docket']); //get directory contents
-                     println($files);
+                    // println($files);
                      for ($i=2; $i < count($files); $i++) { //start at 2 to skip dir name and parent name
                        echo '<a href="https://orspweb2.utep.edu/NDAs_dev/', $row['Docket'].'/'.$files[$i], '" target="_blank">', htmlentities($files[$i]), '<br />', '</a>'; //prints file on the table & makes it clickable
-                       echo '<form action="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '", method="POST"> <input type="submit" value="Delete!"></form>'; //adds delete button for the file
+                       echo '<form action="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '", method="POST"> <input class="btn btn-danger" type="submit" value="Delete File"></form>'; //adds delete button for the file
                      }
                      while ($row2 = $result2->fetch(PDO::FETCH_ASSOC))
                      {
@@ -494,17 +512,18 @@ if (!$mssqlresults)
                      // {
                      echo '<td>';
                        //echo <form action="DeleteFile.php" method="POST"  <input type="submit" value="Delete Docket!"></form>;
+                       echo '<div id=button-layer class="flex-parent jc-center" >';
+                       echo '<form action="UploadDocument.php?docket='. rawurlencode($row['Docket']), '" method="post"> <input class="btn btn-primary" type="submit" value="Upload File   "> </form>';
 
-                       echo '<form action="deleteDocket.php?Docket=', rawurlencode($row['Docket']), '" method="post"> <input type="submit" value="Delete Docket!"> </form>';
+                       echo '<form action="deleteDocket.php?Docket=', rawurlencode($row['Docket']), '" method="post"> <input class="btn btn-danger" type="submit" value="Delete Docket"> </form>';
+                       echo '<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadDoc">Upload File</button>';
+
                        //echo '<button class="btn btn-danger" value="DeleteFile.php?file=', $row['Docket'], '"> Delete Docket</button>';
-                       echo '<form action="UploadDocument.php?docket='. rawurlencode($row['Docket']), '" method="post"> <input type="submit" value="upload file2!"> </form>';
+                       echo '</div>';
 
-                       // echo '&nbsp;&nbsp;<button class="btn btn-primary" id="pretty-upload" type="button" data-toggle="modal" data-target="#uploadDoc" value="https://orspweb2.utep.edu/displayndas_dev/UploadDocument.php?docket=' . $row['Docket'] . '">Upload File</button>
-                       echo '&nbsp;&nbsp;<button class="btn btn-primary" id="pretty-upload" type="button" data-toggle="modal">Upload File</button>
+                      echo '</td>'; ?>
 
-                     </td>'; ?>
 
-                       <!-- The Upload New Docket Modal -->
                        <div id="uploadDoc" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                            <br /><br />
                            <div class="modal-dialog" role="document">
