@@ -15,12 +15,12 @@ echo "<script>console.log('Console: " . $console . "' );</script>";
 require_once("./conf/conf_db_mssql_ndas.php");
 require_once("./conf/conf.php");
 
+
 if (!isset($_GET['docket'])) {
  $_GET['docket'] = "";
 }
 
 // $redirect=  'Location: reportexample.php?docket='.$_GET['docket'];
-
 session_start();
 
 // ----------
@@ -132,10 +132,8 @@ if (!$mssqlresults)
  die();
 }
 
-//include("mkfolders.php");
 
 ?>
-
 <!DOCTYPE html
  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -443,24 +441,84 @@ if (!$mssqlresults)
              </tr>
            </tfoot>
            <!-- come back here -->
-           <!-- <script type="text/javascript">
+
+
+<!-- <script>
+$("#pretty-upload").click(function() {
+    alert("Ya clicked me");
+    var $row = $(this).closest("tr");    // Find the row
+    var $text = $row.find(".dock").text(); // Find the text
+
+    // Let's test it out
+    alert($text);
+});
+</script> -->
+
+<script type="text/javascript">
               $(document).ready(function(){
-                $('#pretty-upload').click(function(){
-                  alert("You clicked me!");
-                  var clickBtnValue = $(this).val();
-                  var ajaxurl = 'ajax.php',
-                  data =  {'action': clickBtnValue};
-                  $.post(ajaxurl, data, function (response) {
-                      // Response div goes here.
-                      alert("action performed successfully");
-                  });
+                $('.pretty-upload').click(function(){
+                  alert(" you clicked me");
+                  var $row = $(this).closest("tr");    // Find the row
+                  var text = $row.find(".dock").text(); // Find the text
+
+                  // Let's test it out
+                  // alert(text);
+                  $("#UploadDocumentTextGoesHere").load("UploadDocument.php?docket="+ text);
+
                 });
+
+
               });
-           </script> -->
+           </script>
 
-
+           <script type="text/javascript">
+                         // $(document).ready(function(){
+                         //   $('#pretty-upload').click(function(){
+                         //     var $row = $(this).closest("tr");    // Find the row
+                         //     var docket_at_row = $row.find(".dock").text(); // Find the text
+                         //
+                         //     // Let's test it out
+                         //     alert(docket_at_row);
+                         //     createCookie("docket_at_row", docket_at_row, "10");
+                         //     console.log("created cookie");
+                         //
+                         //     $.ajax({
+                         //         method: 'GET',
+                         //         url: 'fancy-upload.php',
+                         //         dataType: 'text',
+                         //         data: {
+                         //             'docket' : docket_at_row,
+                         //         }
+                         //     });
+                         //     function createCookie(name, value, days) {
+                         //       console.log("creating cookie");
+                         //         var expires;
+                         //
+                         //         if (days) {
+                         //             var date = new Date();
+                         //             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                         //             expires = "; expires=" + date.toGMTString();
+                         //         }
+                         //         else {
+                         //             expires = "";
+                         //         }
+                         //
+                         //         document.cookie = escape(name) + "=" +
+                         //             escape(value) + expires + "; path=/";
+                         //     }
+                         //   });
+                         // });
+                      </script>
 
            <?php
+           // function ajaxGetDocket(){
+           //   $.ajax({
+           //           url:"ajax.php", //the page containing php script
+           //           type: "POST", //request type
+           //           success:function(result){
+           //            alert(result);
+           //          }
+           //        });           }
              if (!isset($_GET["docket"])) {
                //$q = "SELECT DISTINCT [Project ID] AS ProjectID,[Project Start Date],[Project End Date] FROM [orspdb].[dbo].[GM_AWD_PROJ_PROFILE] ORDER BY [Project Start Date] DESC";
                //$q = "SELECT DISTINCT SUBSTRING([Award/Proposal #],1,10) AS ORSPNumber FROM [orspdb].[dbo].[GM_AWD_PROJ_PROFILE] WHERE [Subcontract] = 'Yes' ORDER BY ORSPNumber DESC";
@@ -477,6 +535,8 @@ if (!$mssqlresults)
                print_r($extra_conn->errorInfo());
                die();
              }
+             // include("conf/mkfolders.php");
+
 
              $mssqlresults = $mssqldb_conn->query($q);
 
@@ -485,7 +545,7 @@ if (!$mssqlresults)
 
                echo '
                  <tr>
-                   <td>' . $row['Docket'] . '</td>
+                   <td class="dock">' . $row['Docket'] . '</td>
                    <td>' . $row['Effective Date'] . '</td>
                    <td>' . $row['Expiration Date'] . '</td>
                    <td>';
@@ -515,8 +575,9 @@ if (!$mssqlresults)
                        echo '<div id=button-layer class="flex-parent jc-center" >';
                        echo '<form action="UploadDocument.php?docket='. rawurlencode($row['Docket']), '" method="post"> <input class="btn btn-primary" type="submit" value="Upload File   "> </form>';
 
-                       echo '<form action="deleteDocket.php?Docket=', rawurlencode($row['Docket']), '" method="post"> <input class="btn btn-danger" type="submit" value="Delete Docket"> </form>';
-                       echo '<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadDoc">Upload File</button>';
+                       echo '<form action="deleteDocket.php?Docket=', rawurlencode($row['Docket']), '" method="post"> <input id="delete-docket" class="btn btn-danger" type="submit" value="Delete Docket"> </form>';
+                       echo '<button class="btn btn-primary pretty-upload" value="upload" type="button" data-toggle="modal" data-target="#uploadDoc">Pretty Upload</button>';
+                       echo '<button id="fancy-delete" class="btn btn-danger"  value="fancy delete">fancy delete </button>';
 
                        //echo '<button class="btn btn-danger" value="DeleteFile.php?file=', $row['Docket'], '"> Delete Docket</button>';
                        echo '</div>';
@@ -536,9 +597,11 @@ if (!$mssqlresults)
                                  <h2>Upload Document </h2>
                                  <p class="detail">Please fill out the form below to upload a new file.</p>
                                </div>
-                               <div class="modal-body">
+                               <div id="UploadDocumentTextGoesHere"class="modal-body">
+                                <!-- onclick include uploaddocument.php  include("UploadDocument.php?docket=". rawurlencode($row['Docket']));-->
 
-                               <?php include("UploadDocument.php"); ?>
+
+
 
                                <?php echo
                                '</div>
@@ -568,6 +631,8 @@ if (!$mssqlresults)
                                }
                              }
                            </script>
+
+
 
                  <?php echo '
                    </td>
