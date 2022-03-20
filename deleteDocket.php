@@ -1,5 +1,5 @@
 <?php
-  if(isset($_GET['Docket'])){
+if(isset($_GET['Docket'])){
 
   function deleteDirectory($dir) {
       if (!file_exists($dir)) {
