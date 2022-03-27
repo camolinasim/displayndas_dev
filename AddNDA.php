@@ -10,11 +10,11 @@
 			</tr>
 			<tr>
 				<td class="formlabel">Effective Date</td>
-				<td><input type="text" name="EffectiveDate" value="" onchange="document.getElementById('Submit2').disabled=false;"></td>
+				<td><input type="date" name="EffectiveDate" value="" onchange="document.getElementById('Submit2').disabled=false;"></td>
 			</tr>
 			<tr>
 				<td class="formlabel">Expiration Date</td>
-				<td><input type="text" name="ExpirationDate" value="" onchange="document.getElementById('Submit2').disabled=false;"></td>
+				<td><input type="date" name="ExpirationDate" value="" onchange="document.getElementById('Submit2').disabled=false;"></td>
 			</tr>
 		</tbody>
 
@@ -27,11 +27,3 @@
 
 	<!--<span class="style2"><br>
 </span>&nbsp;-->
-
-
-
-	</form>
-
-	<dlcalendar click_element_id="img_1" input_element_id="input_6" navbar_style="background-color: lightgrey; color:black;" daybar_style="background-color: lightgrey; font-family: Courier; color:white;" tool_tip="Click to choose date"></dlcalendar>
-
-	<dlcalendar click_element_id="img_2" input_element_id="input_7" navbar_style="background-color: lightgrey; color:black;" daybar_style="background-color: lightgrey; font-family: Courier; color:white;" tool_tip="Click to choose date"></dlcalendar>
