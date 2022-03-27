@@ -178,8 +178,8 @@ if (!$mssqlresults)
          [0, "desc"]
        ],
        lengthMenu: [
-         [50, 100, 250, -1],
-         [50, 100, 250, "All"]
+         [-1],
+         ["All"]
        ],
        buttons: [
          // {
@@ -395,24 +395,24 @@ if (!$mssqlresults)
            </div>
 
            <script>
-             // Get the modal
-             var modal = document.getElementById("ndaModal");
-
-             // Get the <span> element that closes the modal
-             var span = document.getElementsByClassName("close")[0];
-
-
-             // When the user clicks on <span> (x), close the modal
-             span.onclick = function () {
-               modal.style.display = "none";
-             }
-
-             // When the user clicks anywhere outside of the modal, close it
-             window.onclick = function (event) {
-               if (event.target == modal) {
-                 modal.style.display = "none";
-               }
-             }
+             // // Get the modal
+             // var modal = document.getElementById("ndaModal");
+             //
+             // // Get the <span> element that closes the modal
+             // var span = document.getElementsByClassName("close")[0];
+             //
+             //
+             // // When the user clicks on <span> (x), close the modal
+             // span.onclick = function () {
+             //   modal.style.display = "none";
+             // }
+             //
+             // // When the user clicks anywhere outside of the modal, close it
+             // window.onclick = function (event) {
+             //   if (event.target == modal) {
+             //     modal.style.display = "none";
+             //   }
+             // }
            </script>
 
          </div>
@@ -457,7 +457,7 @@ $("#pretty-upload").click(function() {
 <script type="text/javascript">
               $(document).ready(function(){
                 $('.pretty-upload').click(function(){
-                  alert(" you clicked me");
+                  //alert(" you clicked me");
                   var $row = $(this).closest("tr");    // Find the row
                   var text = $row.find(".dock").text(); // Find the text
 
@@ -564,7 +564,7 @@ $("#pretty-upload").click(function() {
 
                        // if ($scdocs_admins_access)
                        // {
-                         echo '&nbsp;&nbsp;&nbsp;<button class="btn btn-warning" value="DeleteFile.php?file=NDAs_dev/', rawurlencode($row2['Filename']), '">Delete2 File </button>';
+                         // echo '&nbsp;&nbsp;&nbsp;<button class="btn btn-warning" value="DeleteFile.php?file=NDAs_dev/', rawurlencode($row2['Filename']), '">Delete2 File </button>';
                        // }
                      }
 
@@ -573,11 +573,9 @@ $("#pretty-upload").click(function() {
                      echo '<td>';
                        //echo <form action="DeleteFile.php" method="POST"  <input type="submit" value="Delete Docket!"></form>;
                        echo '<div id=button-layer class="flex-parent jc-center" >';
-                       echo '<form action="UploadDocument.php?docket='. rawurlencode($row['Docket']), '" method="post"> <input class="btn btn-primary" type="submit" value="Upload File   "> </form>';
-
+                       echo '<button class="btn btn-primary pretty-upload" value="upload" type="button" data-toggle="modal" data-target="#uploadDoc"> Upload File</button>';
                        echo '<form action="deleteDocket.php?Docket=', rawurlencode($row['Docket']), '" method="post"> <input id="delete-docket" class="btn btn-danger" type="submit" value="Delete Docket"> </form>';
-                       echo '<button class="btn btn-primary pretty-upload" value="upload" type="button" data-toggle="modal" data-target="#uploadDoc">Pretty Upload</button>';
-                       echo '<button id="fancy-delete" class="btn btn-danger"  value="fancy delete">fancy delete </button>';
+
 
                        //echo '<button class="btn btn-danger" value="DeleteFile.php?file=', $row['Docket'], '"> Delete Docket</button>';
                        echo '</div>';
@@ -613,10 +611,10 @@ $("#pretty-upload").click(function() {
 
                          <script>
                              // Get the modal
-                             var modal = document.getElementById("uploadDoc");
+                             var modal = document.getElementById("ndaModal");
 
                              // Get the <span> element that closes the modal
-                             var span = document.getElementsByClassName("close")[0];
+                             var span = document.getElementsByClassName("close")[1];
 
 
                              // When the user clicks on <span> (x), close the modal
