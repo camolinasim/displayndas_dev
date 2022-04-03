@@ -1,20 +1,36 @@
 <!-- <br>File to upload <input name="fileToUpload" type="file" id='fileToUpload' STYLE="width: 600px;" onchange="document.getElementById('Submit2').disabled=false;"> -->
  <br>
 
+ <style>
+ .parent {
+   /* text-align: center; */
+ }
+ .child {
+   display: inline-block;
+
+ }
+ </style>
+
 <?php
+
 if(!isset($_GET["docket"])){
     echo("POST['docket'] not set");
     print_r($_GET);
   }
 
 else {
-echo '<div id="upload-document-docket"> Docket: '.$_GET["docket"].'<br><br></div>' ;
+echo "<div class='parent'>";
+echo '<div id="upload-document-docket" class="child">Docket: </div> ' ;
+echo '<div class="target-docket child" >'.$_GET["docket"].'</div>';
+echo "</div><br />";
 
 echo ' <form action="UploadFile.php?docket='.$_GET["docket"].'" method="post" enctype="multipart/form-data">
+  <div>
   Select file to upload:
+  </div>
   <div style="display:flex;align-items:center;width:446px;height:57px;">
   <input type="file" name="fileToUpload" id="fileToUpload">
-  <input class="btn btn-primary" type="submit" value="Submit" name="submit"> </form>
+  <input class="btn btn-primary submit-upload" type="submit" value="Submit" name="submit"> </form>
   </div>
  ';
 }
