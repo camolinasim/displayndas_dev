@@ -178,8 +178,12 @@ if (!$mssqlresults)
          [0, "desc"]
        ],
        lengthMenu: [
-         [-1],
-         ["All"]
+         // [20,50,100,-1],
+         // [20,50,100,"All"]
+
+         [-1,20,50,100],
+         ["All",20,50,100]
+
        ],
        buttons: [
          // {
@@ -440,29 +444,19 @@ if (!$mssqlresults)
                <th scope="col">Options</th>
              </tr>
            </tfoot>
-           <!-- come back here -->
 
 
-<!-- <script>
-$("#pretty-upload").click(function() {
-    alert("Ya clicked me");
-    var $row = $(this).closest("tr");    // Find the row
-    var $text = $row.find(".dock").text(); // Find the text
-
-    // Let's test it out
-    alert($text);
-});
-</script> -->
-
+<!-- When the user clicks the upload button, remember which docket he wants to upload files to.  -->
 <script type="text/javascript">
               $(document).ready(function(){
                 $('.pretty-upload').click(function(){
                   //alert(" you clicked me");
                   var $row = $(this).closest("tr");    // Find the row
-                  var text = $row.find(".dock").text(); // Find the text
+                  var text = $row.find(".dock").text(); // Find the docket
 
-                  // Let's test it out
-                  // alert(text);
+
+                  //Open the upload document pop-up, then add the text of uploadDocument.php.
+                  // (This makes sure the program remembers which docket the user clicked)
                   $("#UploadDocumentTextGoesHere").load("UploadDocument.php?docket="+ text);
 
                 });
@@ -471,54 +465,45 @@ $("#pretty-upload").click(function() {
               });
            </script>
 
-           <script type="text/javascript">
-                         // $(document).ready(function(){
-                         //   $('#pretty-upload').click(function(){
-                         //     var $row = $(this).closest("tr");    // Find the row
-                         //     var docket_at_row = $row.find(".dock").text(); // Find the text
-                         //
-                         //     // Let's test it out
-                         //     alert(docket_at_row);
-                         //     createCookie("docket_at_row", docket_at_row, "10");
-                         //     console.log("created cookie");
-                         //
-                         //     $.ajax({
-                         //         method: 'GET',
-                         //         url: 'fancy-upload.php',
-                         //         dataType: 'text',
-                         //         data: {
-                         //             'docket' : docket_at_row,
-                         //         }
-                         //     });
-                         //     function createCookie(name, value, days) {
-                         //       console.log("creating cookie");
-                         //         var expires;
-                         //
-                         //         if (days) {
-                         //             var date = new Date();
-                         //             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                         //             expires = "; expires=" + date.toGMTString();
-                         //         }
-                         //         else {
-                         //             expires = "";
-                         //         }
-                         //
-                         //         document.cookie = escape(name) + "=" +
-                         //             escape(value) + expires + "; path=/";
-                         //     }
-                         //   });
-                         // });
-                      </script>
+           <!-- Delete Script ;-; -->
+           <script type="text/javascript" >
+        $(function() {
+
+            $(".delete-docket").click(function() {
+                var $row = $(this).closest("tr");    // Find the row
+                var text = $row.find(".dock").text(); // Find the docket
+                //var del_id = $(this).attr("id"); // scary
+                var info = 'Docket=' + text;
+                alert("trying to delete " + info);
+                if (confirm("Sure you want to delete this post? This cannot be undone later.")) {
+                    $.ajax({
+                        type : "POST",
+                        url : "deleteDocket.php?"+info, //URL to the delete php script
+                        // data : info,
+                        success : function() {
+                          $row.remove();
+                          alert("deleted docket " + text);
+                          
+                          //potatoshoe
+                          //document.getElementById("modal-row-docket").deleteRow(0);
+
+                          //$(this).parent().remove();
+
+                        }
+                    });
+                    $(this).parents(".record").animate("fast").animate({
+                        opacity : "hide"
+                    }, "slow");
+                }
+                return false;
+            });
+        });
+ </script>
+
+
 
            <?php
-           // function ajaxGetDocket(){
-           //   $.ajax({
-           //           url:"ajax.php", //the page containing php script
-           //           type: "POST", //request type
-           //           success:function(result){
-           //            alert(result);
-           //          }
-           //        });           }
+
              if (!isset($_GET["docket"])) {
                //$q = "SELECT DISTINCT [Project ID] AS ProjectID,[Project Start Date],[Project End Date] FROM [orspdb].[dbo].[GM_AWD_PROJ_PROFILE] ORDER BY [Project Start Date] DESC";
                //$q = "SELECT DISTINCT SUBSTRING([Award/Proposal #],1,10) AS ORSPNumber FROM [orspdb].[dbo].[GM_AWD_PROJ_PROFILE] WHERE [Subcontract] = 'Yes' ORDER BY ORSPNumber DESC";
@@ -545,7 +530,7 @@ $("#pretty-upload").click(function() {
 
                echo '
                  <tr>
-                   <td class="dock">' . $row['Docket'] . '</td>
+                   <td class="dock" id="docket-#currentRow#">' . $row['Docket'] . '</td>
                    <td>' . $row['Effective Date'] . '</td>
                    <td>' . $row['Expiration Date'] . '</td>
                    <td>';
@@ -573,8 +558,8 @@ $("#pretty-upload").click(function() {
                      echo '<td>';
                        //echo <form action="DeleteFile.php" method="POST"  <input type="submit" value="Delete Docket!"></form>;
                        echo '<div id=button-layer class="flex-parent jc-center" >';
-                       echo '<button class="btn btn-primary pretty-upload" value="upload" type="button" data-toggle="modal" data-target="#uploadDoc"> Upload File</button>';
-                       echo '<form action="deleteDocket.php?Docket=', rawurlencode($row['Docket']), '" method="post"> <input id="delete-docket" class="btn btn-danger" type="submit" value="Delete Docket"> </form>';
+                       echo '<button class="btn btn-primary pretty-upload" value="upload" type="button" data-toggle="modal" data-target="#uploadDoc"> Upload File </button>';
+                       echo '<button class="btn btn-danger delete-docket"> Delete Docket </button>';
 
 
                        //echo '<button class="btn btn-danger" value="DeleteFile.php?file=', $row['Docket'], '"> Delete Docket</button>';
