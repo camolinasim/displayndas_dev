@@ -1,5 +1,6 @@
 <?php
 if(isset($_GET['Docket'])){
+  //println("inside deleteDocket.php")
 
   function deleteDirectory($dir) {
       if (!file_exists($dir)) {
@@ -32,7 +33,7 @@ if(isset($_GET['Docket'])){
   if (($_SESSION['user']==null) && ($_SERVER['HTTP_HOST'] != 'localhost'))
   {
     echo '<script type="text/javascript">parent.location.reload();</script>';
-    header( $redirect);
+    // header( $redirect);
     echo 'This website requires javascript enabled in order to work properly.';
     exit();
   }
@@ -68,7 +69,7 @@ if(isset($_GET['Docket'])){
     $target_dir  = "\\\ORSPSRVAPP02\\webroot2\\NDAs_dev\\".$_GET['Docket'].'\\';
     deleteDirectory($target_dir);
     echo "Docket '"."NDAs_dev/".rawurldecode($_GET["Docket"])."' has been deleted.";
-    header("Location: https://orspweb2.utep.edu/displayndas_dev/index.php");
+    // header("Location: https://orspweb2.utep.edu/displayndas_dev/index.php");
 
     exit();
   }
