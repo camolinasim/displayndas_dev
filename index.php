@@ -452,18 +452,23 @@ if (!$mssqlresults)
                 $('.pretty-upload').click(function(){
                   //alert(" you clicked me");
                   var $row = $(this).closest("tr");    // Find the row
-                  var text = $row.find(".dock").text(); // Find the docket
+                  var target_docket = $row.find(".dock").text(); // Find the docket
+                  var id_of_column_to_update_after_upload = $(this).closest('tr').find(".update_me_after_file_upload").attr('id');    // Find the row
+                  // alert (id_of_column_to_update_after_upload)
+
 
 
                   //Open the upload document pop-up, then add the text of uploadDocument.php.
                   // (This makes sure the program remembers which docket the user clicked)
-                  $("#UploadDocumentTextGoesHere").load("UploadDocument.php?docket="+ text);
+                  $("#UploadDocumentTextGoesHere").load("UploadDocument.php?docket="+ target_docket + '&id_of_column_to_update_after_upload=' + id_of_column_to_update_after_upload);
 
                 });
 
 
               });
            </script>
+
+
 
            <!-- Delete Script ;-; -->
            <script type="text/javascript" >
@@ -483,7 +488,7 @@ if (!$mssqlresults)
                         success : function() {
                           $row.remove();
                           alert("deleted docket " + text);
-                          
+
                           //potatoshoe
                           //document.getElementById("modal-row-docket").deleteRow(0);
 
@@ -499,6 +504,8 @@ if (!$mssqlresults)
             });
         });
  </script>
+
+
 
 
 
@@ -524,38 +531,49 @@ if (!$mssqlresults)
 
 
              $mssqlresults = $mssqldb_conn->query($q);
+             $counter=0;
 
              while ($row = $mssqlresults->fetch(PDO::FETCH_ASSOC)) {
                //println($row);
 
                echo '
                  <tr>
-                   <td class="dock" id="docket-#currentRow#">' . $row['Docket'] . '</td>
+                   <td class="dock" >' . $row['Docket'] . '</td>
                    <td>' . $row['Effective Date'] . '</td>
                    <td>' . $row['Expiration Date'] . '</td>
-                   <td>';
+                   <td id=' .$counter. ' class="update_me_after_file_upload">';
 
                      $row2 = $result2->fetch(PDO::FETCH_ASSOC);
                      //prints most filenames in the NDA's column
+                     //note to myself: copy from HERE
                      $files = scandir("\\inetpub\\webroot2\\NDAs_dev\\".$row['Docket']); //get directory contents
-                    // println($files);
+
+                    //ADDS DOCKET CONTENTS TO NDAs COLUMN OF DATATABLE
+                    //ALSO ADDS DELETE BUTTONS FOR EVERY FILE
                      for ($i=2; $i < count($files); $i++) { //start at 2 to skip dir name and parent name
                        echo '<a href="https://orspweb2.utep.edu/NDAs_dev/', $row['Docket'].'/'.$files[$i], '" target="_blank">', htmlentities($files[$i]), '<br />', '</a>'; //prints file on the table & makes it clickable
                        echo '<form action="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '", method="POST"> <input class="btn btn-danger" type="submit" value="Delete File"></form>'; //adds delete button for the file
                      }
-                     while ($row2 = $result2->fetch(PDO::FETCH_ASSOC))
-                     {
-                       echo '<br><br> <a href="https://orspweb2.utep.edu/NDAs_dev/', $row2['Filename'],'" target="_blank">',htmlentities($row2['Filename']),'</a>';
+
+                     //to HERE
+
+                     // uncomment this while loop if something weird happens.
+                     // while ($row2 = $result2->fetch(PDO::FETCH_ASSOC))
+                     // {
+                       // echo '<br><br> <a href="https://orspweb2.utep.edu/NDAs_dev/', $row2['Filename'],'" target="_blank">',htmlentities($row2['Filename']),'</a>';
 
                        // if ($scdocs_admins_access)
                        // {
                          // echo '&nbsp;&nbsp;&nbsp;<button class="btn btn-warning" value="DeleteFile.php?file=NDAs_dev/', rawurlencode($row2['Filename']), '">Delete2 File </button>';
                        // }
-                     }
+                     // }
 
                      // if ($scdocs_admins_access)
                      // {
                      echo '<td>';
+                     $counter = $counter+1;
+                     // println($counter);
+
                        //echo <form action="DeleteFile.php" method="POST"  <input type="submit" value="Delete Docket!"></form>;
                        echo '<div id=button-layer class="flex-parent jc-center" >';
                        echo '<button class="btn btn-primary pretty-upload" value="upload" type="button" data-toggle="modal" data-target="#uploadDoc"> Upload File </button>';
@@ -620,7 +638,6 @@ if (!$mssqlresults)
                  <?php echo '
                    </td>
                    </tr>';
-
              } //end of while loop that creates NDA main table
 
            ?>
