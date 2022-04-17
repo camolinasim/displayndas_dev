@@ -470,28 +470,20 @@ if (!$mssqlresults)
 
 
 
-           <!-- Delete Script JQUERY ;-; -->
-           <script type="text/javascript" >
+           <!-- Delete Docket JQUERY ;-; -->
+<script type="text/javascript" >
         $(function() {
 
             $(".delete-docket").click(function() {
                 var $row = $(this).closest("tr");    // Find the row
                 var text = $row.find(".dock").text(); // Find the docket
-                //var del_id = $(this).attr("id"); // scary
                 var info = 'Docket=' + text;
                 if (confirm("Sure you want to delete " + info +  "?\nThis cannot be undone later.")) {
                     $.ajax({
                         type : "POST",
                         url : "deleteDocket.php?"+info, //URL to the delete php script
-                        // data : info,
                         success : function() {
                           $row.remove();
-
-                          //potatoshoe
-                          //document.getElementById("modal-row-docket").deleteRow(0);
-
-                          //$(this).parent().remove();
-
                         }
                     });
                     $(this).parents(".record").animate("fast").animate({
@@ -503,6 +495,24 @@ if (!$mssqlresults)
         });
  </script>
 
+<!-- Delete File Jquery -->
+ <script type="text/javascript" >
+             $(document).on('click', '.btn_delete_file', function() {
+                 var url = this.id;
+
+                 if (confirm("Are you sure you want to delete " + url +  "?\nThis cannot be undone later.")) {
+                   $(this).closest('.file_section').remove();
+                     $.ajax({
+                         type : "POST",
+                         url : url, //URL to the delete php script
+                         success : function() {
+                            alert("success")
+                         }
+                     });
+                 }
+                 return false;
+             });
+  </script>
 
 
 
@@ -549,8 +559,11 @@ if (!$mssqlresults)
                     //ADDS DOCKET CONTENTS TO NDAs COLUMN OF DATATABLE
                     //ALSO ADDS DELETE BUTTONS FOR EVERY FILE
                      for ($i=2; $i < count($files); $i++) { //start at 2 to skip dir name and parent name
+                       echo '<div class ="file_section">';
                        echo '<a href="https://orspweb2.utep.edu/NDAs_dev/', $row['Docket'].'/'.$files[$i], '" target="_blank">', htmlentities($files[$i]), '<br />', '</a>'; //prints file on the table & makes it clickable
-                       echo '<form action="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '", method="POST"> <input class="btn btn-danger" type="submit" value="Delete File"></form>'; //adds delete button for the file
+                       echo '<form action="#", method="POST"> <input id="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '"  class="btn btn-danger btn_delete_file" type="button" value="Delete File"></form>'; //adds delete button for the file
+                       echo '</div>';
+
                      }
 
 

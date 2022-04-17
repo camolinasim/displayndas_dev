@@ -91,11 +91,11 @@ echo '<div id="uploadStatus"></div>';
                             $('#uploadStatus').html('<p style="color:#28A74B;">File has uploaded successfully!</p>');
                             var index = id_of_column_to_update_after_upload;
                             var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
-                            var link_to_file = '<a href=' + '"' + 'https://orspweb2.utep.edu/NDAs_dev/' + $target + '/'+ filename + '"' + '>' + filename  + '<br />' + '</a>'
-                            var delete_button = '<form action =' + '"' + 'DeleteFile.php?file=' + encodeURIComponent($target + '/'+ filename) + '" method="POST"> <input class="btn btn-danger" type="submit" value="Delete File" ></form>'
-                                            console.log(delete_button)
-                            $("td#" + id_of_column_to_update_after_upload).append(link_to_file);
-                            $("td#" + id_of_column_to_update_after_upload).append(delete_button);
+                            var abomination = '<div class=" file_section"> <a href=' + '"' + 'https://orspweb2.utep.edu/NDAs_dev/' + $target + '/'+ filename + '"' + '>' + filename  + '<br />' + '</a>' + '<form action="#", method="POST"> <input id=' +'"' + 'DeleteFile.php?file=' + encodeURIComponent($target + '/'+ filename) + '"  class="btn btn-danger btn_delete_file" type="button" value="Delete File" ></div></form>';
+                            // var abomination = container + link_to_file + delete_button
+                            console.log(abomination)
+                            $("td#" + id_of_column_to_update_after_upload).append(abomination);
+                            // $("td#" + id_of_column_to_update_after_upload).append(delete_button);
                             $('#uploadForm')[0].reset();
 
 
