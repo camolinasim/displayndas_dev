@@ -470,7 +470,7 @@ if (!$mssqlresults)
 
 
 
-           <!-- Delete Script ;-; -->
+           <!-- Delete Script JQUERY ;-; -->
            <script type="text/javascript" >
         $(function() {
 
@@ -479,15 +479,13 @@ if (!$mssqlresults)
                 var text = $row.find(".dock").text(); // Find the docket
                 //var del_id = $(this).attr("id"); // scary
                 var info = 'Docket=' + text;
-                alert("trying to delete " + info);
-                if (confirm("Sure you want to delete this post? This cannot be undone later.")) {
+                if (confirm("Sure you want to delete " + info +  "?\nThis cannot be undone later.")) {
                     $.ajax({
                         type : "POST",
                         url : "deleteDocket.php?"+info, //URL to the delete php script
                         // data : info,
                         success : function() {
                           $row.remove();
-                          alert("deleted docket " + text);
 
                           //potatoshoe
                           //document.getElementById("modal-row-docket").deleteRow(0);
@@ -555,18 +553,6 @@ if (!$mssqlresults)
                        echo '<form action="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '", method="POST"> <input class="btn btn-danger" type="submit" value="Delete File"></form>'; //adds delete button for the file
                      }
 
-                     //to HERE
-
-                     // uncomment this while loop if something weird happens.
-                     // while ($row2 = $result2->fetch(PDO::FETCH_ASSOC))
-                     // {
-                       // echo '<br><br> <a href="https://orspweb2.utep.edu/NDAs_dev/', $row2['Filename'],'" target="_blank">',htmlentities($row2['Filename']),'</a>';
-
-                       // if ($scdocs_admins_access)
-                       // {
-                         // echo '&nbsp;&nbsp;&nbsp;<button class="btn btn-warning" value="DeleteFile.php?file=NDAs_dev/', rawurlencode($row2['Filename']), '">Delete2 File </button>';
-                       // }
-                     // }
 
                      // if ($scdocs_admins_access)
                      // {
@@ -574,13 +560,11 @@ if (!$mssqlresults)
                      $counter = $counter+1;
                      // println($counter);
 
-                       //echo <form action="DeleteFile.php" method="POST"  <input type="submit" value="Delete Docket!"></form>;
                        echo '<div id=button-layer class="flex-parent jc-center" >';
                        echo '<button class="btn btn-primary pretty-upload" value="upload" type="button" data-toggle="modal" data-target="#uploadDoc"> Upload File </button>';
                        echo '<button class="btn btn-danger delete-docket"> Delete Docket </button>';
 
 
-                       //echo '<button class="btn btn-danger" value="DeleteFile.php?file=', $row['Docket'], '"> Delete Docket</button>';
                        echo '</div>';
 
                       echo '</td>'; ?>
@@ -599,7 +583,6 @@ if (!$mssqlresults)
                                  <p class="detail">Please fill out the form below to upload a new file.</p>
                                </div>
                                <div id="UploadDocumentTextGoesHere"class="modal-body">
-                                <!-- onclick include uploaddocument.php  include("UploadDocument.php?docket=". rawurlencode($row['Docket']));-->
 
 
 
