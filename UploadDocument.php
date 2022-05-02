@@ -91,18 +91,15 @@ echo '<div id="uploadStatus"></div>';
                             $('#uploadStatus').html('<p style="color:#28A74B;">File has uploaded successfully!</p>');
                             var index = id_of_column_to_update_after_upload;
                             var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
-                            var abomination = '<div class=" file_section"> <a href=' + '"' + 'https://orspweb2.utep.edu/NDAs_dev/' + $target + '/'+ filename + '"' + '>' + filename  + '<br />' + '</a>' + '<form action="#", method="POST"> <input id=' +'"' + 'DeleteFile.php?file=' + encodeURIComponent($target + '/'+ filename) + '"  class="btn btn-danger btn_delete_file" type="button" value="Delete File" ></div></form>';
-                            // var abomination = container + link_to_file + delete_button
-                            console.log(abomination)
-                            $("td#" + id_of_column_to_update_after_upload).append(abomination);
-                            // $("td#" + id_of_column_to_update_after_upload).append(delete_button);
+                            var html_to_create_file_link_and_delete_file_button = '<div class=" file_section"> <a href=' + '"' + 'https://orspweb2.utep.edu/NDAs_dev/' + $target + '/'+ filename + '"' + '>' + filename  + '<br />' + '</a>' + '<form action="#", method="POST"> <input id=' +'"' + 'DeleteFile.php?file=' + encodeURIComponent($target + '/'+ filename) + '"  class="btn btn-danger btn_delete_file" type="button" value="Delete File" ></div></form>';
+                            // var html_to_create_file_link_and_delete_file_button = container + link_to_file + delete_button
+                            $("td#" + id_of_column_to_update_after_upload).append(html_to_create_file_link_and_delete_file_button);
                             $('#uploadForm')[0].reset();
 
 
                           }
                           else{
                               $('#uploadStatus').html('<p style="color:#EA4335;">File not uploaded.</p>');
-                              alert('file not uploaded');
                           }
                       },
                   });

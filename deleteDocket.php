@@ -1,8 +1,11 @@
 <?php
-if(isset($_GET['Docket'])){
+if(isset($_GET['Docket']) && !empty($_GET['Docket']) ){
   //println("inside deleteDocket.php")
 
   function deleteDirectory($dir) {
+    // echo ('<p>
+    // Trying to delete the following:' . $dir .
+    // '</p>');
       if (!file_exists($dir)) {
           return true;
       }
@@ -26,7 +29,6 @@ if(isset($_GET['Docket'])){
   }
 
 
-  print_r($_GET);
   $redirect=  'Location: reportexample.php' ;
   session_start();
 
@@ -67,8 +69,13 @@ if(isset($_GET['Docket'])){
     }
     //delete folder
     $target_dir  = "\\\ORSPSRVAPP02\\webroot2\\NDAs_dev\\".$_GET['Docket'].'\\';
-    deleteDirectory($target_dir);
-    echo "Docket '"."NDAs_dev/".rawurldecode($_GET["Docket"])."' has been deleted.";
+    $is_deleted = deleteDirectory($target_dir);
+    if($is_deleted){
+      echo("The following docket has been deleted: " . $target_dir);
+    }
+    else{
+      echo("your files were NOT deleted");
+     }
     // header("Location: https://orspweb2.utep.edu/displayndas_dev/index.php");
 
     exit();

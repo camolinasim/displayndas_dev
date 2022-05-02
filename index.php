@@ -178,11 +178,11 @@ if (!$mssqlresults)
          [0, "desc"]
        ],
        lengthMenu: [
-         // [20,50,100,-1],
-         // [20,50,100,"All"]
+         [5,10,20,40,-1],
+         [5,10,20,40,"All"]
 
-         [-1,20,50,100],
-         ["All",20,50,100]
+        //  [-1,20,50,100],
+        //  ["All",20,50,100]
 
        ],
        buttons: [
@@ -355,6 +355,9 @@ if (!$mssqlresults)
 
 
 <body>
+  <div id="debug-area" style="text-align: center;">
+
+  </div>
 
 <div class="container" id="container">
 
@@ -445,16 +448,16 @@ if (!$mssqlresults)
              </tr>
            </tfoot>
 
-
+<!-- Upload File JQuery -->
 <!-- When the user clicks the upload button, remember which docket he wants to upload files to.  -->
 <script type="text/javascript">
               $(document).ready(function(){
-                $('.pretty-upload').click(function(){
-                  //alert(" you clicked me");
+                //$(document).on('click', '.btn_delete_file', function() {
+
+                $(document).on('click','.pretty-upload', function(){
                   var $row = $(this).closest("tr");    // Find the row
                   var target_docket = $row.find(".dock").text(); // Find the docket
                   var id_of_column_to_update_after_upload = $(this).closest('tr').find(".update_me_after_file_upload").attr('id');    // Find the row
-                  // alert (id_of_column_to_update_after_upload)
 
 
 
@@ -472,27 +475,24 @@ if (!$mssqlresults)
 
            <!-- Delete Docket JQUERY ;-; -->
 <script type="text/javascript" >
-        $(function() {
-
-            $(".delete-docket").click(function() {
+            $(document).on('click',".delete-docket", function() {
                 var $row = $(this).closest("tr");    // Find the row
-                var text = $row.find(".dock").text(); // Find the docket
-                var info = 'Docket=' + text;
+                let docket_id = $row.find(".dock").text(); // Find the docket
+                var info = 'Docket=' + docket_id;
                 if (confirm("Sure you want to delete " + info +  "?\nThis cannot be undone later.")) {
                     $.ajax({
                         type : "POST",
                         url : "deleteDocket.php?"+info, //URL to the delete php script
-                        success : function() {
-                          $row.remove();
+                        success : function(data) {
+                          $("#ndas").DataTable().rows($("#"+docket_id)).remove()
+                          $row.remove()
+                          $("#debug-area").html(data);
+
                         }
                     });
-                    $(this).parents(".record").animate("fast").animate({
-                        opacity : "hide"
-                    }, "slow");
                 }
                 return false;
             });
-        });
  </script>
 
 <!-- Delete File Jquery -->
@@ -500,13 +500,14 @@ if (!$mssqlresults)
              $(document).on('click', '.btn_delete_file', function() {
                  var url = this.id;
 
-                 if (confirm("Are you sure you want to delete " + url +  "?\nThis cannot be undone later.")) {
+                 if (confirm("Are you sure you want to delete this file? This cannot be undone later.")) {
                    $(this).closest('.file_section').remove();
                      $.ajax({
                          type : "POST",
                          url : url, //URL to the delete php script
-                         success : function() {
-                            alert("success")
+                         success : function(data) {
+                           $("#debug-area").html(data);
+
                          }
                      });
                  }
@@ -546,14 +547,15 @@ if (!$mssqlresults)
 
                echo '
                  <tr>
-                   <td class="dock" >' . $row['Docket'] . '</td>
-                   <td>' . $row['Effective Date'] . '</td>
-                   <td>' . $row['Expiration Date'] . '</td>
+                   <td id='. $row['Docket'] . ' class="dock" data-counter='.$counter. ' >' . $row['Docket'] . '</td>
+                   <td id='. 'effective_date'  .$counter. '>' . $row['Effective Date'] . '</td>
+                   <td id='. 'expiration_date' .$counter. '>' . $row['Expiration Date'] . '</td>
                    <td id=' .$counter. ' class="update_me_after_file_upload">';
 
                      $row2 = $result2->fetch(PDO::FETCH_ASSOC);
                      //prints most filenames in the NDA's column
                      //note to myself: copy from HERE
+                     // println("trying to add ". "\\inetpub\\webroot2\\NDAs_dev\\".$row['Docket']);
                      $files = scandir("\\inetpub\\webroot2\\NDAs_dev\\".$row['Docket']); //get directory contents
 
                     //ADDS DOCKET CONTENTS TO NDAs COLUMN OF DATATABLE
