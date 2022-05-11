@@ -1,6 +1,6 @@
 <?php
 //run this after mkfolders.php
-//it places each file into its respective folder
+//it moves each file into its respective folder
 include("conf_db_mssql_ndas.php");
 include("conf.php");
 $path = "\\\orspsrvapp02\\webroot2\\NDAs_dev\\";

@@ -2,11 +2,11 @@
 session_start();
 if(isset($_GET['file']) && !empty($_GET['file'])){
 
-  if (($_SESSION['user']==null) && ($_SERVER['HTTP_HOST'] != 'localhost'))
-  {
-    echo 'This website requires javascript enabled in order to work properly.';
-    exit();
-  }
+  // if (($_SESSION['user']==null) && ($_SERVER['HTTP_HOST'] != 'localhost'))
+  // {
+  //   echo 'This website requires javascript enabled in order to work properly.';
+  //   exit();
+  // }
 
   // $scdocs_admins_access = $_SESSION["ADMIN_SCDOCS_DISPLAY"];
   //

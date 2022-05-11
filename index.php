@@ -189,7 +189,7 @@ if (!$mssqlresults)
          // {
          //   extend: 'collection',
          {
-           text: 'Add New NDA',
+           text: 'Create New Docket',
            action: function () {
              modal.style.display = "block";
            }
@@ -703,11 +703,14 @@ if (!$mssqlresults)
    <script src="assets/js/main.js" type="text/javascript"></script>
    <script src="assets/js/carousel.js" type="text/javascript"></script>
 
+
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.4/css/select.dataTables.min.css" />
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.4/js/dataTables.select.min.js" />
+
    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" />
    <link rel="stylesheet" type="text/css"
      href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" />
-   <link rel="stylesheet" type="text/css"
-     href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" />
+
 
 
    <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
@@ -717,7 +720,6 @@ if (!$mssqlresults)
    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
    <script type="text/javascript"
      src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
-
 
    <script type="text/javascript" language="javascript"
      src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js">
@@ -739,6 +741,9 @@ if (!$mssqlresults)
      </script>
    <script type="text/javascript" language="javascript"
      src="//cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js">
+     </script>
+        <script type="text/javascript" language="javascript"
+     src="https://cdn.datatables.net/select/1.3.4/js/dataTables.select.min.js">
      </script>
 
    <!-- MARKS TO HIGHLIGHT DATATABLE SEARCH -->

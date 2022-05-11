@@ -32,13 +32,13 @@ if(isset($_GET['Docket']) && !empty($_GET['Docket']) ){
   $redirect=  'Location: reportexample.php' ;
   session_start();
 
-  if (($_SESSION['user']==null) && ($_SERVER['HTTP_HOST'] != 'localhost'))
-  {
-    echo '<script type="text/javascript">parent.location.reload();</script>';
-    // header( $redirect);
-    echo 'This website requires javascript enabled in order to work properly.';
-    exit();
-  }
+  // if (($_SESSION['user']==null) && ($_SERVER['HTTP_HOST'] != 'localhost'))
+  // {
+  //   echo '<script type="text/javascript">parent.location.reload();</script>';
+  //   // header( $redirect);
+  //   echo 'This website requires javascript enabled in order to work properly.';
+  //   exit();
+  // }
 
   // $scdocs_admins_access = $_SESSION["ADMIN_SCDOCS_DISPLAY"];
   //
