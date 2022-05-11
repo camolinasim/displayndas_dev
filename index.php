@@ -189,7 +189,7 @@ if (!$mssqlresults)
          // {
          //   extend: 'collection',
          {
-           text: 'Create New Docket',
+           text: 'Add Docket',
            action: function () {
              modal.style.display = "block";
            }
@@ -389,7 +389,7 @@ if (!$mssqlresults)
                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                    <span aria-hidden="true">&times;</span>
                  </button>
-                 <h2>Add NDA</h2>
+                 <h2>Add Docket</h2>
                  <p class="detail">Please fill out the form below to add or update a NDA.</p>
                </div>
                <div class="modal-body">
@@ -474,6 +474,7 @@ if (!$mssqlresults)
 
 
            <!-- Delete Docket JQUERY ;-; -->
+           <!-- allows you to delete a docket without reloading the page. Deletes everything inside a docket and removes the row on the datatable GUI associated to the deleted docket -->
 <script type="text/javascript" >
             $(document).on('click',".delete-docket", function() {
                 var $row = $(this).closest("tr");    // Find the row
@@ -496,6 +497,8 @@ if (!$mssqlresults)
  </script>
 
 <!-- Delete File Jquery -->
+<!-- allows you to delete a file without reloading the page. Removes deleted rows from UI, database, and docket.-->
+
  <script type="text/javascript" >
              $(document).on('click', '.btn_delete_file', function() {
                  var url = this.id;
@@ -515,8 +518,55 @@ if (!$mssqlresults)
              });
   </script>
 
+<!-- Input Validation Jquery -->
+<!-- When writing the name of a docket, this script prevents the user from inputting invalid characters -->
+<script type="text/javascript">
+   $(function() {
+        $('#input_docket_name').on('keypress', function(e) {
+            if (e.which == 32){
+                $("#input_validation_area").text("No spaces allowed");
+                return false;
+            }
+            else if (e.which == 34){
+                $("#input_validation_area").text("No quotation marks allowed");
+                return false;
+            }
+            else if (e.which == 39){
+                $("#input_validation_area").text("No apostrophes allowed");
+                return false;
+            }
+            else if (e.which == 47){
+                $("#input_validation_area").text("No slash allowed");
+                return false;
+            }
+            else if (e.which == 92){
+                $("#input_validation_area").text("No backslash allowed");
+                return false;
+            }
+            else if (e.which == 96){
+                $("#input_validation_area").text("No grave accent allowed");
+                return false;
+            }
+            else if (e.which == 94){
+                $("#input_validation_area").text("No carets accent allowed");
+                return false;
+            }
+            else if (e.which == 123){
+                $("#input_validation_area").text("No curly brace allowed");
+                return false;
+            }
+            else if (e.which == 125){
+                $("#input_validation_area").text("No curly brace allowed");
+                return false;
+            }
+            else if (e.which == 126){
+                $("#input_validation_area").text("No tilde accent allowed");
+                return false;
+            }
 
-
+        });
+});
+</script>
 
            <?php
 

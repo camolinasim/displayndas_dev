@@ -2,11 +2,12 @@
 	echo '<form method="post" id= "SelectionForm" name= "SelectionForm" target="_blank" enctype="multipart/form-data">';
 ?>
 	<br>
+	<div id="input_validation_area" style="color: red; display: inline-block;" ></div>
 	<table class="addNDA">
 		<tbody>
 			<tr>
 				<td class="formlabel">Docket</td>
-				<td><input type="text" name="Docket" value="" onchange="document.getElementById('Submit2').disabled=false;" required></td>
+				<td><input id="input_docket_name" type="text" name="Docket" value="" onchange="document.getElementById('Submit2').disabled=false;" required></td>
 			</tr>
 			<tr>
 				<td class="formlabel">Effective Date</td>
@@ -31,7 +32,8 @@
 </span>&nbsp;-->
 </form>
 
-
+<!-- all logic related to adding a new docket to the GUI dynamically. All the stuff below happens after clicking "Submit" on the Add Docket popup -->
+<!-- Below is logic to assign each cell of the new docket a specific class. There's also logic to update the effective date and expiration date of dockets without reloading the page -->
 <script>
 $( "#SelectionForm" ).on( "submit", function( event ) {
   event.preventDefault();

@@ -20,7 +20,10 @@ if (!$mssqldb_conn)
 }
 if (isset($_POST['Submit2']))
 {
-  $q = "INSERT INTO ndas ([Docket], [Effective Date], [Expiration Date]) VALUES ('".$_POST["Docket"]."', '".$_POST["EffectiveDate"]."', '".$_POST["ExpirationDate"]."');";
+  $dkt = filter_var($_POST["Docket"],
+            FILTER_SANITIZE_STRING);
+
+  $q = "INSERT INTO ndas ([Docket], [Effective Date], [Expiration Date]) VALUES ('".$dkt."', '".$_POST["EffectiveDate"]."', '".$_POST["ExpirationDate"]."');";
   $directory_created = mkdir($path_to_NDAs . $_POST["Docket"]);
   if($directory_created){
     echo "New docket added successfuly.";
