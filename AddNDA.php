@@ -6,15 +6,15 @@
 		<tbody>
 			<tr>
 				<td class="formlabel">Docket</td>
-				<td><input type="text" name="Docket" value="" onchange="document.getElementById('Submit2').disabled=false;"></td>
+				<td><input type="text" name="Docket" value="" onchange="document.getElementById('Submit2').disabled=false;" required></td>
 			</tr>
 			<tr>
 				<td class="formlabel">Effective Date</td>
-				<td><input type="date" name="EffectiveDate" value="" onchange="document.getElementById('Submit2').disabled=false;"></td>
+				<td><input type="date" name="EffectiveDate" value="" onchange="document.getElementById('Submit2').disabled=false;" required></td>
 			</tr>
 			<tr>
 				<td class="formlabel">Expiration Date</td>
-				<td><input type="date" name="ExpirationDate" value="" onchange="document.getElementById('Submit2').disabled=false;"></td>
+				<td><input type="date" name="ExpirationDate" value="" onchange="document.getElementById('Submit2').disabled=false;" required></td>
 			</tr>
 		</tbody>
 
@@ -65,7 +65,9 @@ $( "#SelectionForm" ).on( "submit", function( event ) {
 						var placeholder_to_know_where_to_put_the_uploadFile_and_deleteDocket_buttons = "placeholder" + Math.random();
 
             $("#results").html(data);
+			let docket_already_exists=data.includes("Warning");
 						if(submit_clicked){
+							if(!docket_already_exists){
 										var new_row=t.row.add( [
 														docket_name,
 														effective_date,
@@ -76,8 +78,11 @@ $( "#SelectionForm" ).on( "submit", function( event ) {
 													.draw()
 													.node()
 
+												//adds blue highlight to the newly created row
+												t.row(":contains('"+placeholder_to_know_where_to_put_the_uploadFile_and_deleteDocket_buttons+"')").select()
+
 												//<adding upload file and delete docket buttons to correct location
-												placeholder_location =	t.cell(":contains('"+placeholder_to_know_where_to_put_the_uploadFile_and_deleteDocket_buttons+"')").select()
+												placeholder_location =	t.cell(":contains('"+placeholder_to_know_where_to_put_the_uploadFile_and_deleteDocket_buttons+"')")
 												
 												html_to_add_uploadFile_and_deleteDocket_in_placeholder_location = '<div id="button-layer" class="flex-parent jc-center"><button class="btn btn-primary pretty-upload" value="upload" type="button" data-toggle="modal" data-target="#uploadDoc"> Upload File </button><button class="btn btn-danger delete-docket"> Delete Docket </button></div>';
 												placeholder_location.data(html_to_add_uploadFile_and_deleteDocket_in_placeholder_location)
@@ -90,6 +95,8 @@ $( "#SelectionForm" ).on( "submit", function( event ) {
 
 												//Adding id attribute to the docket cell. This makes sure the program knows which docket to upload to, or which docket to delete.
 												$( new_row ).find('td').eq(0).attr("id", docket_name);
+												$( new_row ).find('td').eq(0).attr("data-counter", number_to_give_unique_ids);
+
 
 												//giving ID to effective date cell
 												$( new_row ).find('td').eq(1).attr("id", 'effective_date'+ number_to_give_unique_ids);
@@ -97,17 +104,17 @@ $( "#SelectionForm" ).on( "submit", function( event ) {
 												//giving ID to expiration date cell
 												$( new_row ).find('td').eq(2).attr("id", 'expiration_date'+ number_to_give_unique_ids);
 
-
-
 												//adding update_me_after_file_upload class to the NDAs cell of the newly added row. The program uses this class after a file is uploaded to know where to put a link to the uploaded file and the delete button for that file
 												$( new_row ).find('td').eq(3).addClass('update_me_after_file_upload');
 												$( new_row ).find('td').eq(3).attr("id", number_to_give_unique_ids);
-												t.cell(":contains('update_me_after_file_upload')").select().data("") //clear the cell
+												t.cell(":contains('update_me_after_file_upload')").data("") //clear the cell
 
 											}
-					else{
+										}
+					else {
+						//if you reach this code, then update button was clicked.
 						var magic_number = $('#'+ docket_name).attr("data-counter"); //used for knowing which cells to edit - every row in the datatable has a counter somewhere embedded in its name. It goes from 0 to however many rows there are. We can use this number as follows: "from the row with docket name x, delete the html element with id=effectivedate1 (where 1 is the magic number)"
-						// console.log("magic number:"+  magic_number);
+						//the magic number is the same across an entire row (e.g. each cell of that row contains the magic number in their ID). This allows us to uniquely identify each element of a row and change its data, as long as we know the magic number.
 						$('#'+ "effective_date" + magic_number).empty();
 						$('#'+ "effective_date" + magic_number).append(effective_date);
 						$('#'+ "expiration_date" + magic_number).empty();

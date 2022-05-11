@@ -25,6 +25,9 @@ if (isset($_POST['Submit2']))
   if($directory_created){
     echo "New docket added successfuly.";
   }
+  else{
+    echo("Docket already exists. Your docket was NOT added.");
+  }
 
 
   // header("Location: https://orspweb2.utep.edu/displayndas_dev/index.php");
