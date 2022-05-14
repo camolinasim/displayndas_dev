@@ -18,7 +18,7 @@ echo '<br />';
 
 
 
-  $target_dir  = "\\\ORSPSRVAPP02\\webroot2\\NDAs_dev\\".$_GET['docket'].'\\';
+  $target_dir  = "\\\ORSPSRVAPP02\\webroot2\\NDAs (used by displayndas)\\".$_GET['docket'].'\\';
 
   $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
   print($target_file);

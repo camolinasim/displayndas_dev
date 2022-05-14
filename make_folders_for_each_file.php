@@ -5,9 +5,9 @@
 //After you run this script, run the move_folders_to_each_file.php script. 
 
 //include("conf_db_mssql_ndas.php");
-$path = "\\orspsrvapp02\webroot2\NDAs_dev\\";
-$q1 = "SELECT Docket FROM [displayndas_dev].[dbo].[ndas]";
-$q2 = "SELECT Filename FROM [displayndas_dev].[dbo].[ndafiles]";
+$path = "\\orspsrvapp02\webroot2\NDAs (used by displayndas)\\";
+$q1 = "SELECT Docket FROM [displayndas].[dbo].[ndas]";
+$q2 = "SELECT Filename FROM [displayndas].[dbo].[ndafiles]";
 $extra_conn3 = new PDO($PDO_ndas);
 //falta incluir el archivo donde esta el config -- donde esta el pdo ndas
 

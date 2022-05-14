@@ -47,8 +47,8 @@ if (!$mssqldb_conn)
 
 
 //$NumberOfFiles = count(scandir("D:\inetpub\webroot2\\NDAs (used by displayndas)"));
-$NumberOfFiles = count(scandir("\\\ORSPSRVAPP02\\webroot2\\NDAs_dev"));
-$q = "SELECT NumberOfFiles FROM [displayndas_dev].[dbo].[ndafiles] WHERE NumberOfFiles IS NOT NULL";
+$NumberOfFiles = count(scandir("\\\ORSPSRVAPP02\\webroot2\\NDAs (used by displayndas)"));
+$q = "SELECT NumberOfFiles FROM [displayndas].[dbo].[ndafiles] WHERE NumberOfFiles IS NOT NULL";
 $result2 = $mssqldb_conn->query($q);
 if (!$result2)
 {
@@ -63,11 +63,11 @@ $row2 = $result2->fetch(PDO::FETCH_ASSOC);
 
 if ($row2['NumberOfFiles'] != $NumberOfFiles)
 {
- $d = dir("\\\ORSPSRVAPP02\\webroot2\\NDAs_dev");
+ $d = dir("\\\ORSPSRVAPP02\\webroot2\\NDAs (used by displayndas)");
 
  // Delete all the records in table ndafiles...
 
- $q = "DELETE FROM [displayndas_dev].[dbo].[ndafiles];";
+ $q = "DELETE FROM [displayndas].[dbo].[ndafiles];";
  $result = $mssqldb_conn->query($q);
  if (!$result)
  {
@@ -88,7 +88,7 @@ if ($row2['NumberOfFiles'] != $NumberOfFiles)
    // Insert filename into table  -FIX : Arnold 022120
    //-----
 
-   $q = "INSERT INTO [displayndas_dev].[dbo].[ndafiles] (Filename) VALUES $filename;";
+   $q = "INSERT INTO [displayndas].[dbo].[ndafiles] (Filename) VALUES $filename;";
    $result = $mssqldb_conn->query($q);
    if (!$result)
    {
@@ -103,7 +103,7 @@ if ($row2['NumberOfFiles'] != $NumberOfFiles)
 
  // Update the table with the current number of directories.
 
- $q = "INSERT INTO [displayndas_dev].[dbo].[ndafiles] (NumberOfFiles) VALUES (".$NumberOfFiles.");";
+ $q = "INSERT INTO [displayndas].[dbo].[ndafiles] (NumberOfFiles) VALUES (".$NumberOfFiles.");";
  $result = $mssqldb_conn->query($q);
  if (!$result)
  {
@@ -448,6 +448,14 @@ if (!$mssqlresults)
              </tr>
            </tfoot>
 
+           <!-- <div id="mkfolderplz" ></div>
+
+           <script type="text/javascript">
+           $(document).ready( function() { 
+        $('#mkfolderplz').load('make_folders_for_each_file.php'); 
+    }); 
+    </script> -->
+
 <!-- Upload File JQuery -->
 <!-- When the user clicks the upload button, remember which docket he wants to upload files to.  -->
 <script type="text/javascript">
@@ -520,7 +528,11 @@ if (!$mssqlresults)
 
 <!-- Input Validation Jquery -->
 <!-- When writing the name of a docket, this script prevents the user from inputting invalid characters -->
+
 <script type="text/javascript">
+  var invalid_characters = {};
+  
+  
    $(function() {
         $('#input_docket_name').on('keypress', function(e) {
             if (e.which == 32){
@@ -575,7 +587,7 @@ if (!$mssqlresults)
                //$q = "SELECT DISTINCT SUBSTRING([Award/Proposal #],1,10) AS ORSPNumber FROM [orspdb].[dbo].[GM_AWD_PROJ_PROFILE] WHERE [Subcontract] = 'Yes' ORDER BY ORSPNumber DESC";
                $q = "SELECT DISTINCT SUBSTRING([Award/Proposal #],1,11) AS ORSPNumber FROM [orspdb].[dbo].[GM_AWD_PROJ_PROFILE] WHERE [Subcontract] = 'Yes' ORDER BY ORSPNumber DESC";
              } else {
-               $q = "SELECT DISTINCT Docket,[Effective Date],[Expiration Date] FROM [displayndas_dev].[dbo].[ndas] WHERE Docket LIKE '" . $_GET["docket"] . "%' ORDER BY docket DESC";
+               $q = "SELECT DISTINCT Docket,[Effective Date],[Expiration Date] FROM [displayndas].[dbo].[ndas] WHERE Docket LIKE '" . $_GET["docket"] . "%' ORDER BY docket DESC";
              }
 
              $extra_conn2 = new PDO($PDO_ndas);
@@ -586,7 +598,7 @@ if (!$mssqlresults)
                print_r($extra_conn->errorInfo());
                die();
              }
-             // include("conf/mkfolders.php");
+            //  include("conf/mkfolders.php");
 
 
              $mssqlresults = $mssqldb_conn->query($q);
@@ -605,14 +617,13 @@ if (!$mssqlresults)
                      $row2 = $result2->fetch(PDO::FETCH_ASSOC);
                      //prints most filenames in the NDA's column
                      //note to myself: copy from HERE
-                     // println("trying to add ". "\\inetpub\\webroot2\\NDAs_dev\\".$row['Docket']);
-                     $files = scandir("\\inetpub\\webroot2\\NDAs_dev\\".$row['Docket']); //get directory contents
+                     $files = scandir("\\inetpub\\webroot2\\NDAs (used by displayndas)\\".$row['Docket']); //get directory contents
 
                     //ADDS DOCKET CONTENTS TO NDAs COLUMN OF DATATABLE
                     //ALSO ADDS DELETE BUTTONS FOR EVERY FILE
                      for ($i=2; $i < count($files); $i++) { //start at 2 to skip dir name and parent name
                        echo '<div class ="file_section">';
-                       echo '<a href="https://orspweb2.utep.edu/NDAs_dev/', $row['Docket'].'/'.$files[$i], '" target="_blank">', htmlentities($files[$i]), '<br />', '</a>'; //prints file on the table & makes it clickable
+                       echo '<a href="https://orspweb2.utep.edu/NDAs (used by displayndas)/', $row['Docket'].'/'.$files[$i], '" target="_blank">', htmlentities($files[$i]), '<br />', '</a>'; //prints file on the table & makes it clickable
                        echo '<form action="#", method="POST"> <input id="DeleteFile.php?file=', rawurlencode($row['Docket'].'/'.$files[$i]), '"  class="btn btn-danger btn_delete_file" type="button" value="Delete File"></form>'; //adds delete button for the file
                        echo '</div>';
 

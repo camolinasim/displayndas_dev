@@ -1,5 +1,5 @@
 <?php
-$path_to_NDAs = "\\\ORSPSRVAPP02\\webroot2\\NDAs_dev\\";
+$path_to_NDAs = "\\\ORSPSRVAPP02\\webroot2\\NDAs (used by displayndas)\\";
 // $redirect=  'Location: reportexample.php' ;
 // header($redirect);
 
@@ -12,7 +12,7 @@ session_start();
 // {
 //   exit();
 // }
-$mssqldb_conn = new PDO("sqlsrv:server=orspsrvapp02.utep.edu;Database=displayndas_dev","orspbt","3T3p*r3N1w");
+$mssqldb_conn = new PDO("sqlsrv:server=orspsrvapp02.utep.edu;Database=displayndas","orspbt","3T3p*r3N1w");
 if (!$mssqldb_conn)
 {
   echo "Unable to connect to the MSSQL server";
@@ -33,7 +33,6 @@ if (isset($_POST['Submit2']))
   }
 
 
-  // header("Location: https://orspweb2.utep.edu/displayndas_dev/index.php");
 }
 else if (isset($_POST['Submit3']))
 {

@@ -14,7 +14,7 @@ if(isset($_GET['file']) && !empty($_GET['file'])){
   // {
   //   exit();
   // }
-  $File = "\\inetpub\\webroot2\\NDAs_dev\\".($_GET["file"]); //obtains the path of the file with a "%2F" between docket and nda
+  $File = "\\inetpub\\webroot2\\NDAs (used by displayndas)\\".($_GET["file"]); //obtains the path of the file with a "%2F" between docket and nda
                                                              //e.g. \\inetpub\\webroot2\\NDAs_dev\\2020-0022%2Ftest.pdf
                                                              //%2F comes from html turning the "/" char into ASCII
   //echo(__FILE__.":".__LINE__.' $File = '.$File.'<br>' );

@@ -46,19 +46,19 @@ if(isset($_GET['Docket']) && !empty($_GET['Docket']) ){
   // {
   //   exit();
   // }
-    $File = "ORSPSRVAPP02/webroot2/NDAs_dev/".($_GET["Docket"]);
+    $File = "ORSPSRVAPP02/webroot2/NDAs (used by displayndas)/".($_GET["Docket"]);
 
     //echo(__FILE__.":".__LINE__.' $File = '.$File.'<br>' );
 
   if (!is_file($File))
   {
-    $mssqldb_conn = new PDO("sqlsrv:server=orspsrvapp02.utep.edu;Database=displayndas_dev","orspbt","3T3p*r3N1w");
+    $mssqldb_conn = new PDO("sqlsrv:server=orspsrvapp02.utep.edu;Database=displayndas","orspbt","3T3p*r3N1w");
     if (!$mssqldb_conn)
     {
       echo "Unable to connect to the MSSQL server";
       exit(0);
     }
-    $q = "DELETE FROM [displayndas_dev].[dbo].[ndas] WHERE Docket='".rawurldecode($_GET["Docket"])."'";
+    $q = "DELETE FROM [displayndas].[dbo].[ndas] WHERE Docket='".rawurldecode($_GET["Docket"])."'";
     $result2 = $mssqldb_conn->query($q);
     if (!$result2)
     {
@@ -68,7 +68,7 @@ if(isset($_GET['Docket']) && !empty($_GET['Docket']) ){
       die();
     }
     //delete folder
-    $target_dir  = "\\\ORSPSRVAPP02\\webroot2\\NDAs_dev\\".$_GET['Docket'].'\\';
+    $target_dir  = "\\\ORSPSRVAPP02\\webroot2\\NDAs (used by displayndas)\\".$_GET['Docket'].'\\';
     $is_deleted = deleteDirectory($target_dir);
     if($is_deleted){
       echo("The following docket has been deleted: " . $target_dir);
@@ -76,7 +76,6 @@ if(isset($_GET['Docket']) && !empty($_GET['Docket']) ){
     else{
       echo("your files were NOT deleted");
      }
-    // header("Location: https://orspweb2.utep.edu/displayndas_dev/index.php");
 
     exit();
   }
